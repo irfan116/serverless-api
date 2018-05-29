@@ -4,6 +4,9 @@ import { ErrorResult, ForbiddenResult, NotFoundResult } from '../../shared/error
 import { ResponseBuilder } from '../../shared/response-builder';
 import { GetUserResult } from './users.interfaces';
 import { UsersService } from './users.service';
+import { APIGatewayEvent } from 'aws-lambda';
+import { parseJson } from '../common/Common';
+import { GetEmployeeResult, Employee } from '../entity/Employee';
 
 export class UsersController {
   public constructor(private _service: UsersService) {
@@ -35,5 +38,32 @@ export class UsersController {
 
         return ResponseBuilder.internalServerError(error, callback);
       });
+  }
+
+  public CreateEmployee: ApiHandler = (event: APIGatewayEvent, context: ApiContext, callback: ApiCallback): void => {
+    // Input validation.
+    if (!event.body) {
+      return ResponseBuilder.badRequest(ErrorCode.MissingBody, 'Please specify the body!', callback);
+    }
+
+    let req = parseJson(event.body);
+
+    this._service.creatEmploee(req)
+      .then((result: Employee) => {
+        return ResponseBuilder.ok<Employee>(result, callback);  // tslint:disable-line arrow-return-shorthand
+      })
+      .catch((error: ErrorResult) => {
+        if (error instanceof NotFoundResult) {
+          return ResponseBuilder.notFound(error.code, error.description, callback);
+        }
+
+        if (error instanceof ForbiddenResult) {
+          return ResponseBuilder.forbidden(error.code, error.description, callback);
+        }
+
+        return ResponseBuilder.internalServerError(error, callback);
+      });
+
+
   }
 }

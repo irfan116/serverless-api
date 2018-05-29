@@ -46,3 +46,9 @@ functions:
                 description: Returned when the operation is completed successfully.
                 responseModels:
                   "application/json": GetUserResponse   
+  create-employee:
+    handler: src/users/users.CreateEmployee
+    events:
+      - http:
+          method: post
+          path: /api/v1/employees                  

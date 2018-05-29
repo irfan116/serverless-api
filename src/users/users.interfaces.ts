@@ -11,3 +11,13 @@ export interface User {
   export interface GetUserResult {
     user: User;
   }
+
+  interface CreateEmployeeRequest
+    {
+        firstName:string;
+        lastName:string;
+        email:string;
+        role:string;
+    }
+
+     

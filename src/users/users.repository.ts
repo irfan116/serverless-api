@@ -24,4 +24,5 @@ export class UsersRepository {
   public hasAccess(id: number): boolean {
     return id !== 666;   // tslint:disable-line no-magic-numbers (Demo number.)
   }
+  
 }
