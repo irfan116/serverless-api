@@ -1,4 +1,4 @@
-export interface User {
+export interface Patient {
     firstName: string;
     lastName: string;
     email: String;
@@ -8,11 +8,11 @@ export interface User {
     populationDensity: number;
   }
   
-  export interface GetUserResult {
-    user: User;
+  export interface GetPatientResult {
+    patient: Patient;
   }
 
-  interface CreateEmployeeRequest
+  interface CreateUserRequest
     {
         firstName:string;
         lastName:string;

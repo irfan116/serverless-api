@@ -1,4 +1,4 @@
-import { User } from './users.interfaces';
+import { Patient } from './users.interfaces';
 
 export class UsersRepository {
  
@@ -7,7 +7,7 @@ export class UsersRepository {
   }
 
   
-  public getUser(id: number, defaultCountry: string): User {
+  public getUser(id: number, defaultCountry: string): Patient {
     return {
       firstName: 'irfan',
       lastName: 'khattak',

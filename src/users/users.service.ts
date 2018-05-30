@@ -1,9 +1,9 @@
 import { ForbiddenResult, NotFoundResult } from '../../shared/errors';
-import { User, GetUserResult } from './users.interfaces';
+import { Patient, GetPatientResult } from './users.interfaces';
 import { UsersRepository } from './users.repository';
 import { DbContext } from '../common/DbContext';
 import { parseJson } from '../common/Common';
-import { Employee } from '../entity/Employee';
+import { User } from '../entity/User';
 import * as uuid from 'uuid';
 
 export class UsersService {
@@ -12,8 +12,8 @@ export class UsersService {
     this.dbContext = new DbContext();
   }
 
-  public getUser(id: number): Promise<GetUserResult> {
-    return new Promise((resolve: (result: GetUserResult) => void, reject: (reason: NotFoundResult) => void): void => {
+  public getUser(id: number): Promise<GetPatientResult> {
+    return new Promise((resolve: (result: GetPatientResult) => void, reject: (reason: NotFoundResult) => void): void => {
       if (!this._repo.exists(id)) {
           reject(new NotFoundResult('UNKNOWN_USER', 'There is no user with the specified ID!'));
           return;
@@ -25,26 +25,26 @@ export class UsersService {
       }
 
       const defaultCountry: string = this._env.DEFAULT_COUNTRY || 'Hungary';
-      const user: User = this._repo.getUser(id, defaultCountry);
-      const result: GetUserResult = {
-        user
+      const patient: Patient = this._repo.getUser(id, defaultCountry);
+      const result: GetPatientResult = {
+        patient
       };
 
       resolve(result);
     });
   }
 
-  public creatEmploee(body:string):Promise<Employee>{
+  public creatUser(body:string):Promise<User>{
     let req = parseJson(body);
-    let employee = new Employee();
-        employee.id = uuid.v4();
-        employee.firstName = req.firstName;
-        employee.lastName = req.lastName;
-        employee.role = req.role
-        employee.email = req.email;
+    let user = new User();
+        user.id = uuid.v4();
+        user.firstName = req.firstName;
+        user.lastName = req.lastName;
+        user.role = req.role
+        user.email = req.email;
 
-    return this.dbContext.put('user',employee).then(() =>{
-      return employee;
+    return this.dbContext.put('user',user).then(() =>{
+      return user;
     });
     
   }

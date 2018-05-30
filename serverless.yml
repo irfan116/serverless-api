@@ -47,8 +47,8 @@ functions:
                 responseModels:
                   "application/json": GetUserResponse   
   create-employee:
-    handler: src/users/users.CreateEmployee
+    handler: src/users/users.CreateUser
     events:
       - http:
           method: post
-          path: /api/v1/employees                  
+          path: /api/v1/user                  

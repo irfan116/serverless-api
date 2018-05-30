@@ -2,11 +2,11 @@ import { ApiCallback, ApiContext, ApiEvent, ApiHandler } from '../../shared/api.
 import { ErrorCode } from '../../shared/error-codes';
 import { ErrorResult, ForbiddenResult, NotFoundResult } from '../../shared/errors';
 import { ResponseBuilder } from '../../shared/response-builder';
-import { GetUserResult } from './users.interfaces';
+import { GetPatientResult } from './users.interfaces';
 import { UsersService } from './users.service';
 import { APIGatewayEvent } from 'aws-lambda';
 import { parseJson } from '../common/Common';
-import { GetEmployeeResult, Employee } from '../entity/Employee';
+import { GetUserResult, User } from '../entity/User';
 
 export class UsersController {
   public constructor(private _service: UsersService) {
@@ -24,8 +24,8 @@ export class UsersController {
 
     const id: number = +event.pathParameters.id;
     this._service.getUser(id)
-      .then((result: GetUserResult) => {
-        return ResponseBuilder.ok<GetUserResult>(result, callback);  // tslint:disable-line arrow-return-shorthand
+      .then((result: GetPatientResult) => {
+        return ResponseBuilder.ok<GetPatientResult>(result, callback);  // tslint:disable-line arrow-return-shorthand
       })
       .catch((error: ErrorResult) => {
         if (error instanceof NotFoundResult) {
@@ -40,15 +40,15 @@ export class UsersController {
       });
   }
 
-  public CreateEmployee: ApiHandler = (event: APIGatewayEvent, context: ApiContext, callback: ApiCallback): void => {
+  public CreateUser: ApiHandler = (event: APIGatewayEvent, context: ApiContext, callback: ApiCallback): void => {
     // Input validation.
     if (!event.body) {
       return ResponseBuilder.badRequest(ErrorCode.MissingBody, 'Please specify the body!', callback);
     }    
 
-    this._service.creatEmploee(event.body)
-      .then((result: Employee) => {
-        return ResponseBuilder.ok<Employee>(result, callback);  // tslint:disable-line arrow-return-shorthand
+    this._service.creatUser(event.body)
+      .then((result: User) => {
+        return ResponseBuilder.ok<User>(result, callback);  // tslint:disable-line arrow-return-shorthand
       })
       .catch((error: ErrorResult) => {
         if (error instanceof NotFoundResult) {

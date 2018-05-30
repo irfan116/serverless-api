@@ -1,4 +1,4 @@
-export class Employee
+export class User
 {
     public id;
 
@@ -12,6 +12,6 @@ export class Employee
 
 }
 
-export interface GetEmployeeResult {
-    employee: Employee;
+export interface GetUserResult {
+    user: User;
   } 

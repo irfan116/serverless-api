@@ -8,4 +8,4 @@ const service: UsersService = new UsersService(repo, process.env);
 const controller: UsersController = new UsersController(service);
 
 export const getUser: ApiHandler = controller.getUser;
-export const CreateEmployee: ApiHandler = controller.CreateEmployee;
+export const CreateUser: ApiHandler = controller.CreateUser;
