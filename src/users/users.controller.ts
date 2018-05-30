@@ -44,11 +44,9 @@ export class UsersController {
     // Input validation.
     if (!event.body) {
       return ResponseBuilder.badRequest(ErrorCode.MissingBody, 'Please specify the body!', callback);
-    }
+    }    
 
-    let req = parseJson(event.body);
-
-    this._service.creatEmploee(req)
+    this._service.creatEmploee(event.body)
       .then((result: Employee) => {
         return ResponseBuilder.ok<Employee>(result, callback);  // tslint:disable-line arrow-return-shorthand
       })

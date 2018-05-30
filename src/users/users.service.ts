@@ -43,7 +43,7 @@ export class UsersService {
         employee.role = req.role
         employee.email = req.email;
 
-    return this.dbContext.put('employee',employee).then(() =>{
+    return this.dbContext.put('user',employee).then(() =>{
       return employee;
     });
     
