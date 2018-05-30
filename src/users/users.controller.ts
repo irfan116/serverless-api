@@ -24,8 +24,8 @@ export class UsersController {
 
     const id: number = +event.pathParameters.id;
     this._service.getUser(id)
-      .then((result: GetPatientResult) => {
-        return ResponseBuilder.ok<GetPatientResult>(result, callback);  // tslint:disable-line arrow-return-shorthand
+      .then((result: User) => {
+        return ResponseBuilder.ok<User>(result, callback);  // tslint:disable-line arrow-return-shorthand
       })
       .catch((error: ErrorResult) => {
         if (error instanceof NotFoundResult) {

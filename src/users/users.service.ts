@@ -4,7 +4,9 @@ import { UsersRepository } from './users.repository';
 import { DbContext } from '../common/DbContext';
 import { parseJson } from '../common/Common';
 import { User } from '../entity/User';
+import { GetUserResult } from '../entity/User'
 import * as uuid from 'uuid';
+
 
 export class UsersService {
   dbContext: DbContext;
@@ -12,25 +14,40 @@ export class UsersService {
     this.dbContext = new DbContext();
   }
 
-  public getUser(id: number): Promise<GetPatientResult> {
-    return new Promise((resolve: (result: GetPatientResult) => void, reject: (reason: NotFoundResult) => void): void => {
+  public get(page='1', limit='10', search){
+    return this.dbContext.query<User>({
+      TableName: 'user'
+  });
+
+  }
+
+  public getUserById(id){
+    return this.dbContext.query<User>({
+      TableName: 'user'
+  }).then((users)=> users[0]);
+
+  }
+
+  public getUser(id: number): Promise<User> {
+    return new Promise((resolve: (result: User) => void, reject: (reason: NotFoundResult) => void): void => {
       if (!this._repo.exists(id)) {
           reject(new NotFoundResult('UNKNOWN_USER', 'There is no user with the specified ID!'));
           return;
       }
 
       if (!this._repo.hasAccess(id)) {
-        reject(new ForbiddenResult('PERMISSION_REQUIRED', 'You have no permission to access the city with the specified ID!'));
+        reject(new ForbiddenResult('PERMISSION_REQUIRED', 'You have no permission to access the user with the specified ID!'));
         return;
       }
 
-      const defaultCountry: string = this._env.DEFAULT_COUNTRY || 'Hungary';
-      const patient: Patient = this._repo.getUser(id, defaultCountry);
-      const result: GetPatientResult = {
-        patient
-      };
+      const defaultCountry: string = this._env.DEFAULT_COUNTRY || 'Hungary';      
+      this.getUserById(id).then((user)=>{
 
-      resolve(result);
+        resolve(user);
+
+      });//this._repo.getUser(id, defaultCountry);
+   
+      
     });
   }
 
